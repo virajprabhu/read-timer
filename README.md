@@ -1,4 +1,4 @@
-README
+# README
 
 Read-Timer is a chrome extension built with JavaScript that provides an estimate of the amount of time it will take to read an article on a webpage. The present implementation uses an average adult reading speed of 200 WPM to compute this estimate. 
 
