@@ -1,27 +1,13 @@
-function getPageWordCount() {
-	alert('Running!');
-	var text = document.getElementByTagName('body').innerHTML;
-	alert('Running1!');
-
-	var words = text.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
-	var count = words.length;
-	// console.log(count);
-	return count;	
+chrome.extension.onRequest.addListener(function(wordLength) {
+	var averageReadSpeedWPM = 200;
+	var readTime = wordLength / averageReadSpeedWPM;
+	alert('Read Time' + readTime);
+});
+window.onload = function() {
+	chrome.windows.getCurrent(function (currentWindow) {
+		chrome.tabs.query({ active: true, windowId: currentWindow.id}, function(activeTabs){
+			chrome.tabs.executeScript(
+				activeTabs[0].id, {file: 'sendArticleLength.js', allFrames: true});
+		});
+	});
 }
-
-function computeReadingTime(){
-
-	count = getPageWordCount();
-	alert('Count' + count);
-	averageReadSpeedWPM = 200;
-	readTime = count / averageReadSpeedWPM;
-	return readTime;
-}
-
-time = computeReadingTime();
-
-// chrome.browserAction.onClicked.addListener(function(tab) {
-// 	chrome.tabs.executeScript({
-// 		code: "$('#status').html("+time+");"
-// 	});
-// });
