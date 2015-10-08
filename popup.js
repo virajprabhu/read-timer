@@ -1,7 +1,7 @@
 chrome.extension.onRequest.addListener(function(wordLength) {
 	var averageReadSpeedWPM = 200;
 	var readTime = wordLength / averageReadSpeedWPM;
-	alert('Read Time' + readTime);
+	document.getElementById('status').innerHTML='Read Time: ' + Math.ceil(readTime) + " minutes";
 });
 window.onload = function() {
 	chrome.windows.getCurrent(function (currentWindow) {
