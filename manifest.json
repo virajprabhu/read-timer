@@ -3,10 +3,6 @@
   "name": "Read Timer",
   "description": "This extension provides an estimate of the amount of time it will take to read the article on the current page",
   "version": "1.0",
-  // "content_scripts": [{
-  //   "matches": ["http://*/*", "https://*/*"],
-  //   "js":      ["content.js"]
-  // }],
   "browser_action": {
     "default_title": "Read Timer",
     "default_icon": "icon.png",
