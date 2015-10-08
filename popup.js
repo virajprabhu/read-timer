@@ -1,7 +1,12 @@
-chrome.extension.onRequest.addListener(function(wordLength) {
-	var averageReadSpeedWPM = 200;
-	var readTime = wordLength / averageReadSpeedWPM;
-	document.getElementById('status').innerHTML='Read Time: ' + Math.ceil(readTime) + " minutes";
+chrome.extension.onRequest.addListener(function(request) {
+	if(request.type=='count'){
+		var wordLength = request.wordLength
+		var averageReadSpeedWPM = 200;
+		var readTime = wordLength / averageReadSpeedWPM;
+		document.getElementById('status').innerHTML= Math.ceil(readTime) + " min read. ";
+	}else if(request.type=='scroll'){
+			document.getElementById('remaining').innerHTML=request.remainingTime + " left";
+	}
 });
 window.onload = function() {
 	chrome.windows.getCurrent(function (currentWindow) {
