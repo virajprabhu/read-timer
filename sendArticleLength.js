@@ -1,3 +1,7 @@
+/*
+ * Content Script for Read Timer
+ * Makes calls to the Readability.js API and extracts the word count of the article.
+ */
 var location = document.location;
 
 var uri = {
@@ -9,6 +13,9 @@ var uri = {
 };
 
 var article = new Readability(uri, document).parse();
+
+// Replace all separators with a custom separator
 var words = article.content.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
+
 var count = words.length;
 count

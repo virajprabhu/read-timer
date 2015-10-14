@@ -1,3 +1,6 @@
+/*
+ * Computes the time remaining based on the scroll position.
+ */
 function showTimeLeft(){
 	var scrollPos = window.pageYOffset | document.body.scrollTop
 	var body = document.body, html = document.documentElement;
@@ -5,9 +8,14 @@ function showTimeLeft(){
 	console.log("Remaining Time: " + Math.ceil((1-scrollPos/height)*count/200 ))
 	chrome.extension.sendRequest({remainingTime:Math.ceil((1-scrollPos/height)*count/200)});
 }
+
+/*
+ * Tracks the scroll event
+ */
 window.onscroll = function(){
 	showTimeLeft()	
 };
+
 showTimeLeft()
 
 
