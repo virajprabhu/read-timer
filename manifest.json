@@ -9,5 +9,5 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab","cookies","http://*/*", "https://*/*"  ]
+    "activeTab","cookies","http://*/*", "https://*/*","chrome-extension://*/*"  ]
 }

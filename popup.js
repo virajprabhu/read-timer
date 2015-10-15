@@ -12,6 +12,11 @@ var startTime = new Date();
 // Initialize time spent on page
 var timeSpent = 0;
 
+if (!chrome.cookies) {
+  alert("entered");
+  chrome.cookies = chrome.experimental.cookies;
+}
+
 /** 
  * Computes the estimate total read time of the article on the page.
  */
@@ -28,11 +33,15 @@ function totalTime(wc){
  * TODO: chrome.cookies not recognized
  */
 function getSpeedCookie(){
-	/*chrome.cookies.get({url:document.location,name:"read_timer_timetaken"},function(cookie){
+	chrome.cookies.get({url:"http://localhost",name:"read_timer_timetaken"},function(cookie){
 		if(cookie!=null)
-			alert("Got Cookie "+cookie.name+" "+cookie.value);
-	});	*/
+			alert(cookie.name+" "+cookie.value);
+			// alert("Got Cookie "+cookie.name+" "+cookie.value);
+		else
+			alert("No such cookie found");
+	});	
 }
+
 
 /**
  * Computes total time spent on the page, with the current tab active.
@@ -40,8 +49,15 @@ function getSpeedCookie(){
 function stopTimer(){
 	var endTime = new Date();
 	timeSpent += endTime - startTime;
-	chrome.cookies.set({url:document.location,name:"read_timer_timetaken",value:timeSpent,expirationDate:2147483647});
+	alert("setting cookie in "+"http://localhost");
+	chrome.cookies.set({url:"http://localhost",name:"read_timer_timetaken",value:""+timeSpent,expirationDate:2147483647});
+	alert("Done");
 }
+
+setTimeout(function(){
+	stopTimer();	 
+	getSpeedCookie();	
+},2000);
 
 /**
  * Listener for the active tab being closed.
@@ -51,7 +67,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 });
 
 /**
- * Listener for user navigating away from active tab.
+ * Listener for user navigating away to a different url.
  */
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo,tab) {
 	if(changeInfo.url){
