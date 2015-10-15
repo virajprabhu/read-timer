@@ -11,3 +11,7 @@ The future scope of this extension could include:
 * Factoring in the complexity of the article while computing the estimate 
 
 * Factoring in other intangible aspects such as user interest in the topic/ nature of the article (for example, a comic) and so on. 
+
+Run instructions:
+
+* Ensure you have the latest version of Google Chrome
