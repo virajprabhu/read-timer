@@ -2,9 +2,11 @@
  * Popup script for Read Timer.
  * Implements functionality for total/remaining read time, learning user's read speed etc.
  */
-var debug = true;
+var debug = false;
 // The word count on the current page.
 var count = -1;
+
+var currentSpeed = 200;
 
 if(!chrome) {
 	alert('Please update Google Chrome to the latest version to run this extension.');
@@ -19,6 +21,7 @@ if (!chrome.cookies) {
  */
 function totalTime(wc) {
 	computeSpeed(function(readSpeedWPM) {
+		currentSpeed = readSpeedWPM;
 		var readTime = wc / readSpeedWPM;
 		document.getElementById('status').innerHTML = Math.ceil(readTime) + "m read";	
 	});
@@ -28,13 +31,12 @@ function totalTime(wc) {
  * Document
  */
 function computeSpeed(callback) {
-	var averageReadSpeedWPM = 200;
 	getSpeedCookie(function(cookie) {
 		var readSpeed = -1;
 		if(cookie != null)
 			readSpeed = parseCookie(cookie);
 		else
-			readSpeed = averageReadSpeedWPM;
+			readSpeed = currentSpeed;
 		callback(readSpeed);
 	});
 }
@@ -85,12 +87,12 @@ chrome.extension.onRequest.addListener(function(request) {
  * Listens for the value of word count sent by content script.
  * TODO: How is this different from the onRequest listener used above?
  */
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if(request.count) {
-		count = request.count;
-		totalTime(count);
-	}
-});
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+// 	if(request.count) {
+// 		count = request.count;
+// 		totalTime(count);
+// 	}
+// });
 
 /**
  * Main method that executes scripts for computing total and remaining read times.
@@ -101,12 +103,19 @@ window.addEventListener('DOMContentLoaded', function() {
 		targetTabID = activeTabs[0].id;
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
 			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: true}, function(result) {
+				count = result;
+				totalTime(count);
 				chrome.runtime.getBackgroundPage(function(bg) {
 					bg.count = count;
 					bg.targetTabID = targetTabID;
 					bg.debug = debug;
-				});				
-				// chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true});		
+					bg.currentSpeed = currentSpeed;
+				});	
+				chrome.tabs.reload(targetTabID, function() {
+					chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
+						chrome.tabs.sendMessage(targetTabID, {wordcount:count});
+					});
+				});
 			});
 		});
 	});

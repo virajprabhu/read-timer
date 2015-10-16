@@ -17,6 +17,6 @@
     "cookies",
     "http://*/*",
     "https://*/*",
-    "background"    
+    "background"
   ]
 }

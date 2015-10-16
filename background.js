@@ -4,6 +4,9 @@ var debug = false;
 // Initialize time spent on page
 var timeSpent = 0;
 
+// Current read speed for the user
+var currentSpeed = 200;
+
 // The word count on the current page.
 var count = -1;
 
@@ -14,13 +17,13 @@ var prevTabID = -1;
 var targetTabID = -1;
 
 if(!chrome.cookies) {
-  // chrome.cookies = chrome.experimental.cookies;
+  chrome.cookies = chrome.experimental.cookies;
 }
 /**
  * Check for Anomalies in the readSpeed based on previous data
  */
 function isAnomaly(readSpeed){
-	return true;
+	return Math.abs(readSpeed-currentSpeed)/currentSpeed > 0.5;	
 }
 
 /**
@@ -29,21 +32,23 @@ function isAnomaly(readSpeed){
  */
 function saveReadSpeed() {
 	if(debug){
-		alert('saving read speed with count ' + count);
+		// alert('saving read speed with count ' + count);
 	}
 	if(timeSpent != 0 && count != -1) {
-		readSpeed = Math.round(count*1000*60/timeSpent);
-		if(isAnomaly(readSpeed)){
-			// alert("setting cookie in http://localhost :: "+readSpeed);
-			chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
+		readSpeed = Math.round(count*1000*60/timeSpent);		
+		// alert("setting cookie in http://localhost :: "+readSpeed);		
+		chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
+			if(!isAnomaly(readSpeed,cookie)){					
 				if(cookie == null)
 					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+readSpeed, expirationDate:2147483647});
 				else
-					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+cookie.value+","+readSpeed, expirationDate:2147483647});
-			});
-		}
+					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+cookie.value+","+readSpeed, expirationDate:2147483647});				
+			}
+			else if(debug)
+				alert("Anomaly in speed "+readSpeed);
+		});				
 	}
-	else
+	else if(debug)
 		alert('Error. count not received.');
 }
 
@@ -88,6 +93,7 @@ chrome.windows.onRemoved.addListener(function(windowId) {
  * TODO: Deal with cached pages.
  */
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+	// alert("Tabid: "+JSON.stringify(tab));
 	if((tabId == targetTabID) && changeInfo.url) {
 		// alert('url changed');
 		stopTimer();
