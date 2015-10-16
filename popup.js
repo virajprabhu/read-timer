@@ -87,12 +87,13 @@ chrome.extension.onRequest.addListener(function(request) {
  * Listens for the value of word count sent by content script.
  * TODO: How is this different from the onRequest listener used above?
  */
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-// 	if(request.count) {
-// 		count = request.count;
-// 		totalTime(count);
-// 	}
-// });
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+	if(changeInfo.status == "complete" && (changeInfo.url == undefined)) {
+		chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
+			chrome.tabs.sendMessage(targetTabID, {wordcount:count});
+		});
+	}
+});
 
 /**
  * Main method that executes scripts for computing total and remaining read times.
@@ -101,20 +102,19 @@ chrome.extension.onRequest.addListener(function(request) {
 window.addEventListener('DOMContentLoaded', function() {
 	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs){
 		targetTabID = activeTabs[0].id;
+
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
-			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: true}, function(result) {
-				count = result;
-				totalTime(count);
-				chrome.runtime.getBackgroundPage(function(bg) {
-					bg.count = count;
-					bg.targetTabID = targetTabID;
-					bg.debug = debug;
-					bg.currentSpeed = currentSpeed;
-				});	
-				chrome.tabs.reload(targetTabID, function() {
-					chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
-						chrome.tabs.sendMessage(targetTabID, {wordcount:count});
-					});
+			chrome.tabs.executeScript(null, { file: "jquery-2.1.4.min.js" }, function() {
+				chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: true}, function(result) {
+					count = result;
+					totalTime(count);
+					chrome.runtime.getBackgroundPage(function(bg) {
+						bg.count = count;
+						bg.targetTabID = targetTabID;
+						bg.debug = debug;
+						bg.currentSpeed = currentSpeed;
+					});	
+					chrome.tabs.reload(targetTabID);		
 				});
 			});
 		});
