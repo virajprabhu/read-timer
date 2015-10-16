@@ -3,6 +3,10 @@
   "name": "Read Timer",
   "description": "This extension provides an estimate of the amount of time it will take to read the article on the current page",
   "version": "1.0",
+  "background": {
+      "scripts": ["background.js"],
+      "persistent": true
+  },
   "browser_action": {
     "default_title": "Read Timer",
     "default_icon": "icon.png",
@@ -12,5 +16,7 @@
     "tabs",
     "cookies",
     "http://*/*",
-    "https://*/*"    ]
+    "https://*/*",
+    "background"    
+  ]
 }

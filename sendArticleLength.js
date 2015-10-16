@@ -18,4 +18,4 @@ var article = new Readability(uri, document).parse();
 var words = article.content.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
 
 var count = words.length;
-count
+chrome.runtime.sendMessage({count: count});
