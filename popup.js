@@ -2,7 +2,7 @@
  * Popup script for Read Timer.
  * Implements functionality for total/remaining read time, learning user's read speed etc.
  */
-
+var debug = true;
 // The word count on the current page.
 var count = -1;
 
@@ -19,7 +19,6 @@ if (!chrome.cookies) {
  */
 function totalTime(wc) {
 	computeSpeed(function(readSpeedWPM) {
-		alert('readSpeed is ' + readSpeedWPM)
 		var readTime = wc / readSpeedWPM;
 		document.getElementById('status').innerHTML = Math.ceil(readTime) + "m read";	
 	});
@@ -50,7 +49,9 @@ function getSpeedCookie(callback) {
 			callback(cookie);
 		}
 		else {
-			alert("No such cookie found");
+			if(debug){
+				alert("No such cookie found");
+			}
 			callback(null);
 		}		
 	});	
@@ -61,10 +62,12 @@ function getSpeedCookie(callback) {
  */
 function parseCookie(cookie) {
 	var speedArr = cookie.value.split(",");
+
 	var sum = 0;
 	var len = speedArr.length;
+	// alert("Array Length: "+len);
 	for(var i=0; i<len; i++){
-		sum += speedArr[i];
+		sum += parseFloat(speedArr[i]);
 	}
 	return sum/len;
 }
@@ -101,6 +104,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				chrome.runtime.getBackgroundPage(function(bg) {
 					bg.count = count;
 					bg.targetTabID = targetTabID;
+					bg.debug = debug;
 				});				
 				// chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true});		
 			});

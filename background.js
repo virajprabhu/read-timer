@@ -1,6 +1,6 @@
 // The start time from when the browser action is clicked.
 var startTime = new Date();
-
+var debug = false;
 // Initialize time spent on page
 var timeSpent = 0;
 
@@ -14,7 +14,13 @@ var prevTabID = -1;
 var targetTabID = -1;
 
 if(!chrome.cookies) {
-  chrome.cookies = chrome.experimental.cookies;
+  // chrome.cookies = chrome.experimental.cookies;
+}
+/**
+ * Check for Anomalies in the readSpeed based on previous data
+ */
+function isAnomaly(readSpeed){
+	return true;
 }
 
 /**
@@ -22,16 +28,20 @@ if(!chrome.cookies) {
  * 
  */
 function saveReadSpeed() {
-	alert('saving read speed with count ' + count);
+	if(debug){
+		alert('saving read speed with count ' + count);
+	}
 	if(timeSpent != 0 && count != -1) {
-		readSpeed = count*1000*60/timeSpent;
-		alert("setting cookie in "+"http://localhost");
-		chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
-			if(cookie == null)
-				chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+readSpeed, expirationDate:2147483647});
-			else
-				chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+cookie.value+","+readSpeed, expirationDate:2147483647});
-		});
+		readSpeed = Math.round(count*1000*60/timeSpent);
+		if(isAnomaly(readSpeed)){
+			// alert("setting cookie in http://localhost :: "+readSpeed);
+			chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
+				if(cookie == null)
+					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+readSpeed, expirationDate:2147483647});
+				else
+					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+cookie.value+","+readSpeed, expirationDate:2147483647});
+			});
+		}
 	}
 	else
 		alert('Error. count not received.');
@@ -49,6 +59,7 @@ function startTimer() {
 function stopTimer() {
 	var endTime = new Date();
 	timeSpent += (endTime - startTime);	
+	// alert("timeSpent is "+timeSpent);
 }
 
 
