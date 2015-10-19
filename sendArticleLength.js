@@ -12,7 +12,8 @@
 		scheme: location1.protocol.substr(0, location1.protocol.indexOf(":")),
 		pathBase: location1.protocol + "//" + location1.host + location1.pathname.substr(0, location1.pathname.lastIndexOf("/") + 1)
 	};
-	var article = new Readability(uri, document).parse();
+	var docClone = document.cloneNode(true);
+	var article = new Readability(uri, docClone).parse();
 	// Replace all separators with a custom separator
 	return article.content.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
 }

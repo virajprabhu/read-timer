@@ -84,18 +84,6 @@ chrome.extension.onRequest.addListener(function(request) {
 });
 
 /**
- * Listens for the value of word count sent by content script.
- * TODO: How is this different from the onRequest listener used above?
- */
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	if(changeInfo.status == "complete" && (changeInfo.url == undefined)) {
-		chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
-			chrome.tabs.sendMessage(targetTabID, {wordcount:count});
-		});
-	}
-});
-
-/**
  * Main method that executes scripts for computing total and remaining read times.
  * TODO: Regain control of current window after reload and thus compute remaining time.
  */
@@ -114,7 +102,9 @@ window.addEventListener('DOMContentLoaded', function() {
 						bg.debug = debug;
 						bg.currentSpeed = currentSpeed;
 					});	
-					chrome.tabs.reload(targetTabID);		
+					chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
+						chrome.tabs.sendMessage(targetTabID, {wordcount:count});
+					});
 				});
 			});
 		});
