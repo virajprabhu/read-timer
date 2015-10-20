@@ -26,7 +26,7 @@ function totalTime(wordcount) {
 		wordcount = parseInt(wordcount);
 		if(!isNaN(readSpeedWPM) && !isNaN(wordcount)){
 			var readTime = wordcount / readSpeedWPM;
-			document.getElementById('status').innerHTML = Math.ceil(readTime) + "m read";			
+			document.getElementById('status').innerHTML = Math.ceil(readTime) + " min read";			
 		} else{
 			document.getElementById('status').innerHTML = "Error: Content not found.";
 		}
@@ -39,7 +39,7 @@ function totalTime(wordcount) {
 chrome.extension.onRequest.addListener(function(request) {
 	if(request.scrollPercentage != undefined) {
 		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
-		document.getElementById('remaining').innerHTML= timeLeft + " left";
+		document.getElementById('remaining').innerHTML= "(" + timeLeft + " left)";
 	}
 });
 
