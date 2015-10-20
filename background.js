@@ -1,6 +1,9 @@
 // The start time from when the browser action is clicked.
 var startTime = new Date();
+
+// Debug flag
 var debug = false;
+
 // Initialize time spent on page
 var timeSpent = 0;
 
@@ -28,35 +31,42 @@ function isAnomaly(readSpeed){
 
 
 /**
- * Document
+ * Saves the read speed for the current page to chrome.storage
  * 
  */
 function saveReadSpeed() {
 	if(debug){
-		// alert('saving read speed with count ' + count);
+		alert('Saving read speed with count ' + count);
 	}
 	if(timeSpent != 0 && count != -1) {
 		count = parseInt(count);
 		timeSpent = parseInt(timeSpent);
-		if(!isNaN(count) && !isNaN(timeSpent)){
-			readSpeed = Math.round(count*1000*60/timeSpent);		
+		if(!isNaN(count) && !isNaN(timeSpent)) {
+			readSpeed = Math.round(count*1000*60/timeSpent);
+			chrome.storage.sync.get("readTimerWPM",function(result){
+				if(!isAnomaly(readSpeed)) {
+					if(!result || !result.readTimerWPM) {
+						if(debug){
+							alert("Setter: none found");
+						}
+						chrome.storage.sync.set({"readTimerWPM":[readSpeed]});
+					}
+					else {							
+						result.readTimerWPM.push(readSpeed);
+						if(debug){
+							alert("Setter: setting "+JSON.stringify(result.readTimerWPM));
+						}
+						chrome.storage.sync.set({"readTimerWPM": result.readTimerWPM});	
+					}
+				}
+			});		
 		} else {
 			return;
-		}
-		// alert("setting cookie in http://localhost :: "+readSpeed);		
-		chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
-			if(!isAnomaly(readSpeed,cookie)){					
-				if(cookie == null)
-					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+readSpeed, expirationDate:2147483647});
-				else
-					chrome.cookies.set({url:"http://localhost", name:"readTimerWPM", value:""+cookie.value+","+readSpeed, expirationDate:2147483647});				
-			}
-			else if(debug)
-				alert("Anomaly in speed "+readSpeed);
-		});				
+		}			
 	}
-	else if(debug)
-		alert('Error. count not received.');
+	else if(debug) {
+		alert('Error. Count not received.');
+	}
 }
 
 /**
@@ -65,22 +75,20 @@ function saveReadSpeed() {
 function startTimer() {
 	startTime = new Date();
 }
+
 /**
  * Pauses the timer.
  */
 function stopTimer() {
 	var endTime = new Date();
 	timeSpent += (endTime - startTime);	
-	// alert("timeSpent is "+timeSpent);
 }
-
 
 /**
  * Listener for the active tab being closed.
  */
 chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 	if(tabId == targetTabID) {
-		// alert('tab closed');
 		stopTimer();
 		saveReadSpeed();
 	}
@@ -90,7 +98,6 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
  * Listener for the active window being closed.
  */
 chrome.windows.onRemoved.addListener(function(windowId) {
-	// alert('window closed');
 	stopTimer();
 	saveReadSpeed();
 });
@@ -100,9 +107,7 @@ chrome.windows.onRemoved.addListener(function(windowId) {
  * TODO: Deal with cached pages.
  */
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	// alert("Tabid: "+JSON.stringify(tab));
 	if((tabId == targetTabID) && changeInfo.url) {
-		// alert('url changed');
 		stopTimer();
 		saveReadSpeed();
 	}
@@ -114,7 +119,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 chrome.tabs.onActivated.addListener(function(activeInfo) {
 	// Only dealing with tabs in the same window for now.
 	var activeTabID = activeInfo.tabId;
-	// alert('current active tab id: ' + activeTabID);
 	if(activeTabID == targetTabID) {
 		startTimer();
 	}
@@ -124,3 +128,30 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 	prevTabID = activeTabID;
 });
 
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	for (key in changes) {
+      var storageChange = changes[key];
+      // alert('Storage key ' + key+ " in namespace " +namespace + " changed. " + "Old value was " + storageChange.oldValue + " new value is " + storageChange.newValue);
+      if(key == "readTimerWPM"){
+      	var speedArr = storageChange.newValue;
+      	var newCurrentSpeed;
+      	if(!speedArr) {          		
+			continue;						// No changes to currentSpeed.
+		}
+		else {
+			var sum = 0;
+			var len = speedArr.length;
+			if(len==0) {
+				continue;					// No changes to currentSpeed.
+			}
+			for(var i=0; i<len; i++) {
+				var speed = parseFloat(speedArr[i]);
+				if(!isNaN(speed)){
+					sum += speed;	
+				}		
+			}
+			currentSpeed = sum/len;			// Set averageSpeed			
+		}
+      }
+    }
+});

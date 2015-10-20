@@ -15,4 +15,3 @@ The future scope of this extension could include:
 Run instructions:
 
 * Ensure you have the latest version of Google Chrome.
-* Currently, localhost pages are not supported.
