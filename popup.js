@@ -21,9 +21,15 @@ if (!chrome.cookies) {
  */
 function totalTime(wc) {
 	computeSpeed(function(readSpeedWPM) {
-		currentSpeed = readSpeedWPM;
-		var readTime = wc / readSpeedWPM;
-		document.getElementById('status').innerHTML = Math.ceil(readTime) + "m read";	
+		readSpeedWPM = parseInt(readSpeedWPM);
+		wc = parseInt(wc);
+		if(!isNaN(readSpeedWPM) && !isNaN(wc)){
+			currentSpeed = readSpeedWPM;
+			var readTime = wc / readSpeedWPM;
+			document.getElementById('status').innerHTML = Math.ceil(readTime) + "m read";			
+		} else{
+			document.getElementById('status').innerHTML = "Error, content not found";
+		}
 	});
 }
 
@@ -67,10 +73,17 @@ function parseCookie(cookie) {
 
 	var sum = 0;
 	var len = speedArr.length;
+	if(len==0) {
+		return currentSpeed;
+	}
 	// alert("Array Length: "+len);
 	for(var i=0; i<len; i++){
-		sum += parseFloat(speedArr[i]);
+		var speed = parseFloat(speedArr[i]);
+		if(!isNaN(speed)){
+			sum += speed;	
+		}		
 	}
+
 	return sum/len;
 }
 
@@ -93,7 +106,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
 			chrome.tabs.executeScript(null, { file: "jquery-2.1.4.min.js" }, function() {
-				chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: true}, function(result) {
+				chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false}, function(result) {
 					count = result;
 					totalTime(count);
 					chrome.runtime.getBackgroundPage(function(bg) {
@@ -102,7 +115,7 @@ window.addEventListener('DOMContentLoaded', function() {
 						bg.debug = debug;
 						bg.currentSpeed = currentSpeed;
 					});	
-					chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: true}, function(){					
+					chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function(){					
 						chrome.tabs.sendMessage(targetTabID, {wordcount:count});
 					});
 				});

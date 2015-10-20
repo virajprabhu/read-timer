@@ -26,6 +26,7 @@ function isAnomaly(readSpeed){
 	return Math.abs(readSpeed-currentSpeed)/currentSpeed > 0.5;	
 }
 
+
 /**
  * Document
  * 
@@ -35,7 +36,13 @@ function saveReadSpeed() {
 		// alert('saving read speed with count ' + count);
 	}
 	if(timeSpent != 0 && count != -1) {
-		readSpeed = Math.round(count*1000*60/timeSpent);		
+		count = parseInt(count);
+		timeSpent = parseInt(timeSpent);
+		if(!isNaN(count) && !isNaN(timeSpent)){
+			readSpeed = Math.round(count*1000*60/timeSpent);		
+		} else {
+			return;
+		}
 		// alert("setting cookie in http://localhost :: "+readSpeed);		
 		chrome.cookies.get({url:"http://localhost", name:"readTimerWPM"},function(cookie){
 			if(!isAnomaly(readSpeed,cookie)){					

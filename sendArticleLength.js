@@ -17,7 +17,6 @@
 	// Replace all separators with a custom separator
 	return article.content.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
 }
-
 var words = runReadability();
 var count = words.length;
 count
