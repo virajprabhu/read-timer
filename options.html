@@ -1,0 +1,36 @@
+<!--
+  Popup HTML for Read-Timer
+-->
+<!doctype html>
+<html>
+  <head>
+    <title>Read Timer Options</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+      #input-speed {
+        border: 1px solid black;
+        text-align: center;
+        min-height: 50%;
+      }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+     -->
+  </head>
+  <body>
+    <form id="input-speed">
+      Read Speed:
+      <input type="number" id="input-box" min="10" max="2000" />
+      <input type="submit" value="Submit" />
+    </form>
+  <script src="options.js"></script>
+  </body>
+</html>
+

@@ -7,7 +7,7 @@ function showTimeLeft(count){
 	var scrollPos = window.pageYOffset | document.body.scrollTop
 	var body = document.body, html = document.documentElement;
 	var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-	chrome.extension.sendRequest({scrollPercentage:(scrollPos/height)});
+	chrome.extension.sendMessage({scrollPercentage:(scrollPos/height)});
 }
 
 /*
@@ -24,5 +24,5 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 				alert('Count not received.');
 			}
 		}
-	}	
+	}
 });

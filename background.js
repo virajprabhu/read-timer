@@ -19,20 +19,17 @@ var prevTabID = -1;
 // Target active tab ID
 var targetTabID = -1;
 
-if(!chrome.cookies) {
-  chrome.cookies = chrome.experimental.cookies;
-}
 /**
  * Check for Anomalies in the readSpeed based on previous data
  */
 function isAnomaly(readSpeed){
-	return Math.abs(readSpeed-currentSpeed)/currentSpeed > 0.5;	
+	return Math.abs(readSpeed-currentSpeed)/currentSpeed > 0.5;
 }
 
 
 /**
  * Saves the read speed for the current page to chrome.storage
- * 
+ *
  */
 function saveReadSpeed() {
 	if(debug){
@@ -49,20 +46,23 @@ function saveReadSpeed() {
 						if(debug){
 							alert("Setter: none found");
 						}
-						chrome.storage.sync.set({"readTimerWPM":[readSpeed]});
+						chrome.storage.sync.set({"readTimerWPM": [readSpeed]});
 					}
-					else {							
+					else {
 						result.readTimerWPM.push(readSpeed);
 						if(debug){
 							alert("Setter: setting "+JSON.stringify(result.readTimerWPM));
 						}
-						chrome.storage.sync.set({"readTimerWPM": result.readTimerWPM});	
+						chrome.storage.sync.set({"readTimerWPM": result.readTimerWPM});
 					}
 				}
-			});		
+        else if(debug) {
+          alert('Anomaly. Speed discarded.');
+        }
+			});
 		} else {
 			return;
-		}			
+		}
 	}
 	else if(debug) {
 		alert('Error. Count not received.');
@@ -81,7 +81,7 @@ function startTimer() {
  */
 function stopTimer() {
 	var endTime = new Date();
-	timeSpent += (endTime - startTime);	
+	timeSpent += (endTime - startTime);
 }
 
 /**
@@ -131,27 +131,30 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	for (key in changes) {
       var storageChange = changes[key];
-      // alert('Storage key ' + key+ " in namespace " +namespace + " changed. " + "Old value was " + storageChange.oldValue + " new value is " + storageChange.newValue);
+      if(debug) {
+        alert('Storage key ' + key+ " in namespace " +namespace + " changed. " + "Old value was " + storageChange.oldValue + " new value is " + storageChange.newValue);
+      }
+
       if(key == "readTimerWPM"){
       	var speedArr = storageChange.newValue;
       	var newCurrentSpeed;
-      	if(!speedArr) {          		
+      	if(!speedArr) {
 			continue;						// No changes to currentSpeed.
-		}
-		else {
-			var sum = 0;
-			var len = speedArr.length;
-			if(len==0) {
-				continue;					// No changes to currentSpeed.
-			}
-			for(var i=0; i<len; i++) {
-				var speed = parseFloat(speedArr[i]);
-				if(!isNaN(speed)){
-					sum += speed;	
-				}		
-			}
-			currentSpeed = sum/len;			// Set averageSpeed			
-		}
-      }
+  		}
+  		else {
+  			var sum = 0;
+  			var len = speedArr.length;
+  			if(len==0) {
+  				continue;					// No changes to currentSpeed.
+  			}
+  			for(var i=0; i<len; i++) {
+  				var speed = parseFloat(speedArr[i]);
+  				if(!isNaN(speed)){
+  					sum += speed;
+  				}
+  			}
+  			currentSpeed = sum/len;			// Set averageSpeed
+		  }
     }
+  }
 });
