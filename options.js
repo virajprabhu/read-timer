@@ -17,6 +17,8 @@ function saveOptions() {
       alert('Options saved');
     }
   });
+  window.close();
+  
 }
 
 document.getElementById("input-speed").onsubmit = saveOptions;
