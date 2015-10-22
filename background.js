@@ -128,6 +128,9 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 	prevTabID = activeTabID;
 });
 
+/**
+ * Listener for changes to the readTimerWPM variable in chrome.storage. The currentSpeed is recomputed accordingly.
+ */
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	for (key in changes) {
       var storageChange = changes[key];
@@ -154,7 +157,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
   				}
   			}
   			currentSpeed = sum/len;			// Set averageSpeed
-		  }
+		}
     }
   }
 });

@@ -44,18 +44,18 @@ chrome.extension.onMessage.addListener(function(request) {
 });
 
 /**
- * Main method that executes scripts for computing total and remaining read times.
+ * Main method that includes Readability and executes scripts for computing total and remaining read times.
  *
  */
 window.addEventListener('DOMContentLoaded', function() {
-  chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
-    if(result && result.readTimeDefaultSpeed) {
-      currentSpeed = result.readTimeDefaultSpeed;
-      if(debug) {
-        alert(currentSpeed + ' read from options.');
-      }
-    }
-  });
+	chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
+		if(result && result.readTimeDefaultSpeed) {
+		  currentSpeed = result.readTimeDefaultSpeed;
+		  if(debug) {
+		    alert(currentSpeed + ' read from options.');
+		  }
+		}
+	});
 
 	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs){
 		targetTabID = activeTabs[0].id;
@@ -64,12 +64,14 @@ window.addEventListener('DOMContentLoaded', function() {
 			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false}, function(result) {
 				count = result;
 				totalTime(count);
+
 				chrome.runtime.getBackgroundPage(function(bg) {
 					bg.count = count;
 					bg.targetTabID = targetTabID;
 					bg.debug = debug;
 					bg.currentSpeed = currentSpeed;
 				});
+
 				chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function(){
 					chrome.tabs.sendMessage(targetTabID, {wordcount:count});
 				});
