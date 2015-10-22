@@ -41,6 +41,9 @@ function saveReadSpeed() {
 		if(!isNaN(count) && !isNaN(timeSpent)) {
 			readSpeed = Math.round(count*1000*60/timeSpent);
 			chrome.storage.sync.get("readTimerWPM",function(result){
+				if(debug) {
+					alert('Computed readspeed as ' + readSpeed);
+				}
 				if(!isAnomaly(readSpeed)) {
 					if(!result || !result.readTimerWPM) {
 						if(debug){
