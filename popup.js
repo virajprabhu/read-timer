@@ -63,7 +63,6 @@ window.addEventListener('DOMContentLoaded', function() {
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
 			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false}, function(result) {
 				count = result;
-				totalTime(count);
 
 				chrome.runtime.getBackgroundPage(function(bg) {
 					bg.count = count;
@@ -71,6 +70,8 @@ window.addEventListener('DOMContentLoaded', function() {
 					bg.debug = debug;
 					bg.currentSpeed = currentSpeed;
 				});
+
+				totalTime(count);
 
 				chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function(){
 					chrome.tabs.sendMessage(targetTabID, {wordcount:count});
