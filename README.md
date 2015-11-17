@@ -23,14 +23,17 @@ Contributing:
 3. Choose a descriptive branch name for the feature, apart from master or develop.
 
 4. Checkout develop and create a new branch with this name, like so:
+```
     git fetch upstream
     git checkout develop
     git merge upstream/develop
     git checkout -b your-branch-name
-
+```
 5. Make a commit to your feature branch with a descriptive commit message, like so:
+```
     git commit -a -m "{{YOUR COMMIT MESSAGE HERE}}"
     git push origin {{YOUR BRANCH NAME}}
+```
 
 6. Once done, create a pull request. You're done!
 
