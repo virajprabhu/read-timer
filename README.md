@@ -1,12 +1,14 @@
 # README
 
-Read-Timer is a chrome extension built with JavaScript that provides an estimate of the amount of time it will take to read an article on a webpage. The present implementation uses an average adult reading speed of 200 WPM to compute this estimate. 
+Read-Timer is a chrome extension built with JavaScript that provides an estimate of the amount of time it will take to read an article on a webpage. 
+
+The present implementation starts off with a user's estimate of his/her read speed to calculate the time. Speeds across websites are also tracked and used to refine this initial value and learn the user's actual read speed.
+
+Additionally, the user's current scroll position is used to provide an estimate of the time remaining in the article.
 
 The future scope of this extension could include:
 
-* Learning the speed for a user based on the his rate of scrolling through articles
-
-* Providing an estimate of time remaining depending on his scroll position 
+* Providing a visualization of the progression of the user's read speed over time
 
 * Factoring in the complexity of the article while computing the estimate 
 
@@ -15,3 +17,9 @@ The future scope of this extension could include:
 Run instructions:
 
 * Ensure you have the latest version of Google Chrome.
+
+* Get the extension from the Chrome store at http://bit.ly/1MzUZEe
+
+* Set your read speed estimate in the options tab
+
+* Click the icon while on a blog article to run the extension!
