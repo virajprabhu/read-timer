@@ -12,7 +12,7 @@ var count = -1;
 // Current read speed in WPM, default is average adult read speed.
 var currentSpeed = 200;
 
-if(!chrome) {
+if (!chrome) {
 	alert('Please update Google Chrome to the latest version to run this extension.');
 }
 
@@ -24,10 +24,10 @@ function totalTime(wordcount) {
 		currentSpeed = backgroundPage.currentSpeed;
 		readSpeedWPM = currentSpeed;
 		wordcount = parseInt(wordcount);
-		if(!isNaN(readSpeedWPM) && !isNaN(wordcount)){
+		if(!isNaN(readSpeedWPM) && !isNaN(wordcount)) {
 			var readTime = wordcount / readSpeedWPM;
 			document.getElementById('status').innerHTML = Math.ceil(readTime) + " min read";
-		} else{
+		} else {
 			document.getElementById('status').innerHTML = "Error: Content not found.";
 		}
 	});
@@ -37,7 +37,7 @@ function totalTime(wordcount) {
  * Listens for estimated remaining read time sent from content script.
  */
 chrome.extension.onMessage.addListener(function(request) {
-	if(request.scrollPercentage != undefined) {
+	if (request.scrollPercentage != undefined) {
 		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
 		document.getElementById('remaining').innerHTML= "(" + timeLeft + " left)";
 	}
@@ -49,15 +49,15 @@ chrome.extension.onMessage.addListener(function(request) {
  */
 window.addEventListener('DOMContentLoaded', function() {
 	chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
-		if(result && result.readTimeDefaultSpeed) {
+		if (result && result.readTimeDefaultSpeed) {
 		  currentSpeed = result.readTimeDefaultSpeed;
-		  if(debug) {
+		  if (debug) {
 		    alert(currentSpeed + ' read from options.');
 		  }
 		}
 	});
 
-	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs){
+	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs) {
 		targetTabID = activeTabs[0].id;
 
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 				totalTime(count);
 
-				chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function(){
+				chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function() {
 					chrome.tabs.sendMessage(targetTabID, {wordcount:count});
 				});
 			});

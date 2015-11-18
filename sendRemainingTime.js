@@ -14,13 +14,12 @@ function showTimeLeft(count){
  * Tracks the scroll event
  */
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-	if(request.wordcount) {
+	if (request.wordcount) {
 		wc = request.wordcount;
-		showTimeLeft(wc);
 		window.onscroll = function() {
-			if(wc != -1)
+			if (wc != -1) {
 				showTimeLeft(wc);
-			else if(debug) {
+			} else if(debug) {
 				alert('Count not received.');
 			}
 		}
