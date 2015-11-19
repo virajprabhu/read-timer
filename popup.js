@@ -19,13 +19,14 @@ if (!chrome) {
 /**
  * Computes the estimate total read time of the article on the page.
  */
-function totalTime(wordcount) {
+function totalTime(wordcount, imageCount) {
+	console.log("Image count is " + imageCount);
 	chrome.runtime.getBackgroundPage(function(backgroundPage) {
 		currentSpeed = backgroundPage.currentSpeed;
 		readSpeedWPM = currentSpeed;
 		wordcount = parseInt(wordcount);
 		if(!isNaN(readSpeedWPM) && !isNaN(wordcount)) {
-			var readTime = wordcount / readSpeedWPM;
+			var readTime = (wordcount / readSpeedWPM) + (imageCount * 12 / 60);
 			document.getElementById('status').innerHTML = Math.ceil(readTime) + " min read";
 		} else {
 			document.getElementById('status').innerHTML = "Error: Content not found.";
@@ -44,7 +45,30 @@ chrome.extension.onMessage.addListener(function(request) {
 });
 
 /**
- * Main method that includes Readability and executes scripts for computing total and remaining read times.
+ * Listens for word and image count sent from content script, and executes sendRemainingTime.js 
+ */
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	if (request.imageCount != undefined && request.wordCount != undefined) {
+		count = request.wordCount;
+		imageCount = request.imageCount;
+
+		chrome.runtime.getBackgroundPage(function(bg) {
+			bg.count = count;
+			bg.targetTabID = targetTabID;
+			bg.debug = debug;
+			bg.currentSpeed = currentSpeed;
+		});
+
+		totalTime(count, imageCount);
+
+		chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function() {
+			chrome.tabs.sendMessage(targetTabID, {message:"sendRemainingTime"});
+		});
+	}
+})
+
+/**
+ * Main method that includes Readability and executes scripts for computing total read time.
  *
  */
 window.addEventListener('DOMContentLoaded', function() {
@@ -59,24 +83,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs) {
 		targetTabID = activeTabs[0].id;
-
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
-			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false}, function(result) {
-				count = result;
-
-				chrome.runtime.getBackgroundPage(function(bg) {
-					bg.count = count;
-					bg.targetTabID = targetTabID;
-					bg.debug = debug;
-					bg.currentSpeed = currentSpeed;
-				});
-
-				totalTime(count);
-
-				chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function() {
-					chrome.tabs.sendMessage(targetTabID, {wordcount:count});
-				});
-			});
+			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false});
 		});
 	});
 });
