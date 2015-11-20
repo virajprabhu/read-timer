@@ -29,9 +29,6 @@ function isAnomaly(readSpeed) {
 	return Math.abs(readSpeed-currentSpeed)/currentSpeed > 0.5;
 }
 
-if ( !Date.now ) {
-    Date.now = function() { return new Date().getTime(); }
-}
 
 /**
  * Saves the read speed for the current page to chrome.storage
@@ -41,7 +38,6 @@ function saveReadSpeed() {
 	if (debug){
 		alert('Saving read speed with count ' + count);
 	}
-
 	if (timeSpent != 0 && count != -1) {
 		count = parseInt(count);
 		timeSpent = parseInt(timeSpent);
@@ -56,9 +52,9 @@ function saveReadSpeed() {
 						if (debug){
 							alert("Setter: none found");
 						}
-						chrome.storage.sync.set({"readTimerWPM": [[Date.now(), readSpeed]]});
+						chrome.storage.sync.set({"readTimerWPM": [readSpeed]});
 					} else {
-						result.readTimerWPM.push([Date.now(), readSpeed]);
+						result.readTimerWPM.push(readSpeed);
 						if (debug){
 							alert("Setter: setting " + JSON.stringify(result.readTimerWPM));
 						}
@@ -157,7 +153,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 					continue;					// No changes to currentSpeed.
 				}
 				for (var i=0; i<len; i++) {
-					var speed = parseFloat(speedArr[i][1]);
+					var speed = parseFloat(speedArr[i]);
 					if(!isNaN(speed)){
 						sum += speed;
 					}

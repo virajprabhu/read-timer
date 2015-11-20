@@ -13,10 +13,10 @@
 	};
 	var docClone = document.cloneNode(true);
 	var article = new Readability(uri, docClone).parse();
-	
 	// Replace all separators with a custom separator
 	return article.content.replace(/([ .,;]+)/g,'$1§sep§').split('§sep§');
 }
 var words = runReadability();
-var count = words.length;
-count
+var wordCount = words.length;
+var imageCount = document.getElementsByTagName("img").length;
+chrome.runtime.sendMessage({wordCount: wordCount, imageCount:imageCount});
