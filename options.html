@@ -15,8 +15,30 @@
         text-align: center;
         min-height: 50%;
       }
-    </style>
+      #placeholder {
+        width: 100%;
+        height: 400px;
+      }
+      #placeholder .button {
+          position: absolute;
+          cursor: pointer;
+      }
 
+      #placeholder div.button {
+          font-size: smaller;
+          color: #999;
+          background-color: #eee;
+          padding: 2px;
+      }
+      .message {
+          padding-left: 50px;
+          font-size: smaller;
+      }
+    </style>
+    <script language="javascript" type="text/javascript" src="resources/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="resources/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="resources/jquery.flot.time.js"></script>
+    <script language="javascript" type="text/javascript" src="resources/jquery.flot.navigate.js"></script>
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
@@ -32,6 +54,20 @@
       <div id="saved-message"></div>
     </form>
   <script src="options.js"></script>
+    <div id="header">
+        <h2>History</h2>
+    </div>
+
+    <div id="content">
+
+      <div class="demo-container">
+          <div id="placeholder" class="demo-placeholder"></div>
+      </div>
+
+    <p>Track your learning speed over any time period.</p>
+
+  </div>
+
   </body>
 </html>
 
