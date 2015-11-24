@@ -1,10 +1,10 @@
 /**
  * Popup script for Read Timer.
- * Implements functionality for total/remaining read time, learning user's read speed etc.
+ * Implements functionality for total/remaining read time, learning user"s read speed etc.
  */
 
 // Debug flag
-var debug = false;
+var debug = true;
 
 // The word count on the current page.
 var count = -1;
@@ -13,8 +13,9 @@ var count = -1;
 var currentSpeed = 200;
 
 if (!chrome) {
-	alert('Please update Google Chrome to the latest version to run this extension.');
+	alert("Please update Google Chrome to the latest version to run this extension.");
 }
+
 
 /**
  * Computes the estimate total read time of the article on the page.
@@ -25,11 +26,11 @@ function totalTime(wordcount, imageCount) {
 		currentSpeed = backgroundPage.currentSpeed;
 		readSpeedWPM = currentSpeed;
 		wordcount = parseInt(wordcount);
-		if(!isNaN(readSpeedWPM) && !isNaN(wordcount)) {
+		if (!isNaN(readSpeedWPM) && !isNaN(wordcount)) {
 			var readTime = (wordcount / readSpeedWPM) + (imageCount * 12 / 60);
-			document.getElementById('status').innerHTML = Math.ceil(readTime) + " min read";
+			document.getElementById("status").innerHTML = Math.ceil(readTime) + " min read";
 		} else {
-			document.getElementById('status').innerHTML = "Error: Content not found.";
+			document.getElementById("status").innerHTML = "Error: Content not found.";
 		}
 	});
 }
@@ -40,7 +41,7 @@ function totalTime(wordcount, imageCount) {
 chrome.extension.onMessage.addListener(function(request) {
 	if (request.scrollPercentage != undefined) {
 		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
-		document.getElementById('remaining').innerHTML= "(" + timeLeft + " left)";
+		document.getElementById("remaining").innerHTML = "(" + timeLeft + " left)";
 	}
 });
 
@@ -61,7 +62,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 		totalTime(count, imageCount);
 
-		chrome.tabs.executeScript({file: 'sendRemainingTime.js', allFrames: false}, function() {
+		chrome.tabs.executeScript({file: "sendRemainingTime.js", allFrames: false}, function() {
 			chrome.tabs.sendMessage(targetTabID, {message:"sendRemainingTime"});
 		});
 	}
@@ -71,12 +72,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  * Main method that includes Readability and executes scripts for computing total read time.
  *
  */
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener("DOMContentLoaded", function() {
+	// Add a link to the options page.
+	document.getElementById("optionsLink").href = chrome.extension.getURL("options.html");
+
 	chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
 		if (result && result.readTimeDefaultSpeed) {
 		  currentSpeed = result.readTimeDefaultSpeed;
 		  if (debug) {
-		    alert(currentSpeed + ' read from options.');
+		    // alert(currentSpeed + " read from options.");
 		  }
 		}
 	});
@@ -84,7 +88,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	chrome.tabs.query({active: true, currentWindow:true}, function(activeTabs) {
 		targetTabID = activeTabs[0].id;
 		chrome.tabs.executeScript(null, { file: "readability/Readability.js" }, function() {
-			chrome.tabs.executeScript(null, { file: 'sendArticleLength.js', allFrames: false});
+			chrome.tabs.executeScript(null, { file: "sendArticleLength.js", allFrames: false});
 		});
 	});
 });

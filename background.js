@@ -38,7 +38,7 @@ if ( !Date.now ) {
  *
  */
 function saveReadSpeed() {
-	if (debug){
+	if (debug) {
 		alert('Saving read speed with count ' + count);
 	}
 
@@ -64,15 +64,15 @@ function saveReadSpeed() {
 						}
 						chrome.storage.sync.set({"readTimerWPM": result.readTimerWPM});
 					}
-				}
-        else if (debug) {
-          alert('Anomaly. Speed discarded.');
-        }
+				 }
+		        else if (debug) {
+		          alert('Anomaly. Speed discarded.');
+		        }
 			});
 		} else {
 			return;
 		}
-	} else if(debug) {
+	} else if (debug) {
 		alert('Error. Count not received.');
 	}
 }
@@ -158,7 +158,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				}
 				for (var i=0; i<len; i++) {
 					var speed = parseFloat(speedArr[i][1]);
-					if(!isNaN(speed)){
+					if (!isNaN(speed)) {
 						sum += speed;
 					}
 				}

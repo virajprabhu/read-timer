@@ -6,34 +6,37 @@
   <head>
     <title>Read Timer Options</title>
     <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #input-speed {
-        border: 1px solid black;
-        text-align: center;
-        min-height: 50%;
-      }
-      #placeholder {
-        width: 100%;
-        height: 400px;
-      }
-      #placeholder .button {
-          position: absolute;
-          cursor: pointer;
-      }
+        body {
+            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+            font-size: 100%;
+        }
+        #input-speed {
+            border: 1px solid black;
+            text-align: center;
+            min-height: 50%;
+        }
+        #placeholder {
+            width: 400px;
+            height: 400px;
+        }
+        #placeholder .button {
+            position: absolute;
+            cursor: pointer;
+        }
 
-      #placeholder div.button {
-          font-size: smaller;
-          color: #999;
-          background-color: #eee;
-          padding: 2px;
-      }
-      .message {
-          padding-left: 50px;
-          font-size: smaller;
-      }
+        #placeholder div.button {
+            font-size: smaller;
+            color: #999;
+            background-color: #eee;
+            padding: 2px;
+        }
+        .message {
+            padding-left: 50px;
+            font-size: smaller;
+        }
+        #progressLabel #backLink {
+            text-align: center;
+        }
     </style>
     <script language="javascript" type="text/javascript" src="resources/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="resources/jquery.flot.js"></script>
@@ -45,29 +48,29 @@
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
-  </head>
-  <body>
-    <form id="input-speed">
-      Read Speed:
-      <input type="number" id="input-box" min="10" max="2000" />
-      <input type="submit" value="Submit" />
-      <div id="saved-message"></div>
-    </form>
-  <script src="options.js"></script>
-    <div id="header">
-        <h2>History</h2>
-    </div>
+    </head>
+    <body>
+        <form id="input-speed">
+            Read Speed:
+            <input type="number" id="input-box" min="10" max="2000" />
+            <input type="submit" value="Submit" />
+            <div id="saved-message"></div>
+        </form>
+        <script src="options.js"></script>
+        <div id="header">
+            <h2 id="progressLabel">Progress</h2>
+        </div>
 
-    <div id="content">
+        <div id="content">
+            <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"></div>
+        </div>
 
-      <div class="demo-container">
-          <div id="placeholder" class="demo-placeholder"></div>
-      </div>
+        <p>Track your learning speed over any time period.</p>
 
-    <p>Track your learning speed over any time period.</p>
+        </div>
 
-  </div>
-
-  </body>
+        <a id="backLink">Back</a>
+    </body>
 </html>
 
