@@ -45,6 +45,8 @@ function saveReadSpeed() {
 	if (timeSpent != 0 && count != -1) {
 		count = parseInt(count);
 		timeSpent = parseInt(timeSpent);
+        var gmtOffset = 19800000;
+
 		if (!isNaN(count) && !isNaN(timeSpent)) {
 			readSpeed = Math.round(count * 1000 * 60 / timeSpent);
 			chrome.storage.sync.get("readTimerWPM", function(result) {
@@ -56,9 +58,9 @@ function saveReadSpeed() {
 						if (debug){
 							alert("Setter: none found");
 						}
-						chrome.storage.sync.set({"readTimerWPM": [[Date.now(), readSpeed]]});
+						chrome.storage.sync.set({"readTimerWPM": [[Date.now() + gmtOffset, readSpeed]]});
 					} else {
-						result.readTimerWPM.push([Date.now(), readSpeed]);
+						result.readTimerWPM.push([Date.now() + gmtOffset, readSpeed]);
 						if (debug){
 							alert("Setter: setting " + JSON.stringify(result.readTimerWPM));
 						}

@@ -19,7 +19,7 @@
         "resources/arrow-left.gif",
         "resources/arrow-right.gif",
         "resources/arrow-up.gif",
-        "resources/back_button.png"
+        "resources/back_button.png",
         "resources/gear.png"
         ],
     "permissions": [
