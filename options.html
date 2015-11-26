@@ -11,7 +11,6 @@
             font-size: 100%;
         }
         #input-speed {
-            border: 1px solid black;
             text-align: center;
             min-height: 50%;
         }
@@ -50,27 +49,28 @@
      -->
     </head>
     <body>
-        <form id="input-speed">
-            Read Speed:
-            <input type="number" id="input-box" min="10" max="2000" />
-            <input type="submit" value="Submit" />
-            <div id="saved-message"></div>
-        </form>
-        <script src="options.js"></script>
+        <a id="backLink" style='position:fixed;right:5px;margin-top:0px'>
+            <img id="backButton" src="resources/back_button.png" height="36" width="36">
+        </a>
         <div id="header">
             <h2 id="progressLabel">Progress</h2>
         </div>
+        <form id="input-speed">
+            Current speed is 
+            <input type="number" id="input-box" min="10" max="2000" /> WPM
+            <input type="image" src="resources/thumbs_up_resize.png" value="Submit" /> 
+            <div id="saved-message"></div>
+        </form>
+        <script src="options.js"></script>
+
+        <p>Track your learning speed over any time period.</p>
 
         <div id="content">
             <div class="demo-container">
             <div id="placeholder" class="demo-placeholder"></div>
         </div>
 
-        <p>Track your learning speed over any time period.</p>
-
         </div>
-
-        <a id="backLink">Back</a>
     </body>
 </html>
 

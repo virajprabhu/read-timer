@@ -14,6 +14,14 @@
         "default_icon": "hourglass.png",
         "default_popup": "popup.html"
     },
+    "web_accessible_resources": [
+        "resources/arrow-down.gif",
+        "resources/arrow-left.gif",
+        "resources/arrow-right.gif",
+        "resources/arrow-up.gif",
+        "resources/back_button.png"
+        "resources/gear.png"
+        ],
     "permissions": [
         "tabs",
         "http://*/*",

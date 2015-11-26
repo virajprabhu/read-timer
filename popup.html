@@ -10,12 +10,13 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
       }
-      #status{
+      #status {
         width: auto;
         min-width: 85px;
         text-align: center;
+        margin-right: 20px;
       }      
-      #remaining{
+      #remaining {
         width: auto;
         min-width: 85px;
         text-align: center;
@@ -32,9 +33,11 @@
 
   </head>
   <body>
+  <a id="optionsLink"  style='position:fixed;right:0px;margin-top:5px'>
+    <img id="wrench_icon" src="resources/gear.png" width="16" height="16" align="right"></a>
     <div id="status"></div>
     <div id="remaining"></div>
-    <a id="optionsLink">Options</a>
+    
   </body>
 </html>
 
