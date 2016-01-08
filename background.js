@@ -165,10 +165,10 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 				currentSpeed = Math.round(sum/len);			// Set averageSpeed
 			}
 		}
-		chrome.storage.sync.set({"readTimeDefaultSpeed": currentSpeed}, function() {
-			if (debug) {
-     			alert('Options saved');
-    		}
-		});
+		// chrome.storage.sync.set({"readTimeDefaultSpeed": currentSpeed}, function() {
+		// 	if (debug) {
+  //    			alert('Options saved');
+  //   		}
+		// });
   	}
 });

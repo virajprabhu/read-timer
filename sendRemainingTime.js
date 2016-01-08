@@ -6,7 +6,7 @@ function showTimeLeft(){
 	var scrollPos = window.pageYOffset | document.body.scrollTop
 	var body = document.body, html = document.documentElement;
 	var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-	chrome.runtime.sendMessage({scrollPercentage:(scrollPos/height)});
+	chrome.extension.sendMessage({scrollPercentage:(scrollPos/height)});
 }
 
 /*
