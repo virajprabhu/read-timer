@@ -162,8 +162,13 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 						sum += speed;
 					}
 				}
-				currentSpeed = sum/len;			// Set averageSpeed
+				currentSpeed = Math.round(sum/len);			// Set averageSpeed
 			}
 		}
+		chrome.storage.sync.set({"readTimeDefaultSpeed": currentSpeed}, function() {
+			if (debug) {
+     			alert('Options saved');
+    		}
+		});
   	}
 });

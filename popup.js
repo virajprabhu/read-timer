@@ -4,7 +4,7 @@
  */
 
 // Debug flag
-var debug = true;
+var debug = false;
 
 // The word count on the current page.
 var count = -1;
@@ -38,12 +38,12 @@ function totalTime(wordcount, imageCount) {
 /**
  * Listens for estimated remaining read time sent from content script.
  */
-chrome.extension.onMessage.addListener(function(request) {
-	if (request.scrollPercentage != undefined) {
-		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
-		document.getElementById("remaining").innerHTML = "(" + timeLeft + " left)";
-	}
-});
+// chrome.runtime.onMessage.addListener(function(request) {
+// 	if (request.scrollPercentage != undefined) {
+// 		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
+// 		document.getElementById("remaining").innerHTML = "(" + timeLeft + " left)";
+// 	}
+// });
 
 /**
  * Listens for word and image count sent from content script, and executes sendRemainingTime.js 
@@ -65,6 +65,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		chrome.tabs.executeScript({file: "sendRemainingTime.js", allFrames: false}, function() {
 			chrome.tabs.sendMessage(targetTabID, {message:"sendRemainingTime"});
 		});
+	}
+	if (request.scrollPercentage != undefined) {
+		var timeLeft = Math.ceil((1-request.scrollPercentage) * count / currentSpeed) ;
+		document.getElementById("remaining").innerHTML = "(" + timeLeft + " left)";
 	}
 })
 
