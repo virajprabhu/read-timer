@@ -1,0 +1,47 @@
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+}
+#input-speed {
+    text-align: left;
+    min-height: 50%;
+}
+.small {
+    width: 200px;
+    height: auto
+    overflow: hidden;
+}
+.big {
+    width: 200px;
+    height: 200px;
+}
+#placeholder .button {
+    position: absolute;
+    cursor: pointer;
+}
+#placeholder div.button {
+    font-size: smaller;
+    color: #999;
+    background-color: #eee;
+    padding: 2px;
+}
+.message {
+    padding-left: 50px;
+    font-size: smaller;
+}
+#progressLabel #backLink {
+    text-align: center;
+}
+#submit-tick {
+    height:20px;
+}
+
+#backLink {
+    position:fixed;
+    right:5px;
+    margin-top:0px
+}
+#toggle-size {
+    position: relative;
+    bottom: 10px;
+}

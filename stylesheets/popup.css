@@ -1,0 +1,20 @@
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+}
+#status {
+  width: auto;
+  min-width: 85px;
+  text-align: center;
+  margin-right: 20px;
+}      
+#remaining {
+  width: auto;
+  min-width: 85px;
+  text-align: center;
+}
+#optionsLink {
+  position:fixed;
+  right:0px;
+  margin-top:5px
+}

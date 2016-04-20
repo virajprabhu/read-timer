@@ -5,39 +5,14 @@
 <html>
   <head>
     <title>Read Timer</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        width: auto;
-        min-width: 85px;
-        text-align: center;
-        margin-right: 20px;
-      }      
-      #remaining {
-        width: auto;
-        min-width: 85px;
-        text-align: center;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/popup.css">
     <script src="popup.js"></script>
-
   </head>
   <body>
-  <a id="optionsLink"  style='position:fixed;right:0px;margin-top:5px'>
+  <a id="optionsLink">
     <img id="wrench_icon" src="resources/gear.png" width="16" height="16" align="right"></a>
     <div id="status"></div>
     <div id="remaining"></div>
-    
   </body>
 </html>
 
