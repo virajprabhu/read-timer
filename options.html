@@ -13,28 +13,30 @@
     <script src="options.js"></script>
     </head>
     <body>
-        <a id="backLink">Back</a>
-        <div id="header">
-            <h3 id="progressLabel">PROGRESS</h3>
-        </div>
-        <form id="input-speed">
-            Current speed is 
-            <input type="number" id="input-box" min="10" max="2000" /> WPM
-            <input type="image" id="submit-tick" src="resources/tick.svg" value="Submit" /> 
-            <div id="saved-message"></div>
-        </form>
-        <div class="wrapper">
-            <div class="small">
-                <a href="#">
-                    <img id="toggle-size" src="resources/expand.svg">
-                </a>
-                <div id="content">
-                    <div class="demo-container">
-                        <div id="placeholder"></div>
-                    </div>
+        <header>
+            <span id="progress-label">PROGRESS</span>
+            <a id="backlink">Back</a>
+        </header>
+        <section>
+            <form>
+                <div id="input-speed">
+                    Current speed is 
+                    <input type="number" id="input-box" min="10" max="2000" /> WPM
                 </div>
+                <div id="submit-button">
+                    <input type="image" id="submit-tick" src="resources/tick.svg" value="Submit" />
+                </div>
+            </form>
+        </section>
+        <section class="viz-wrapper">
+            <div id="resize-wrapper">
+                <a href="#">
+                    <img src="resources/collapse.svg">
+                </a>
             </div>
-        </div>
+            <div id="placeholder" class="big">
+            </div>
+        </section>
     </body>
 </html>
 

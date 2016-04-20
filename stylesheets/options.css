@@ -1,47 +1,55 @@
 body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 100%;
+    font-size: 14px;
 }
+/* 
+ * Setting styling for header
+ */
+header {
+    font-weight: bold;
+    font-size: 120%;
+    min-width: 250px;
+    padding-bottom: 10px;
+}
+
+header #backlink {
+    float: right;
+    font-size: 80%;
+    text-decoration: none;
+    color: inherit;
+}
+
+/*
+ * Styling for speed section
+ */
 #input-speed {
+    display: inline-block;
     text-align: left;
-    min-height: 50%;
 }
-.small {
-    width: 200px;
-    height: auto
-    overflow: hidden;
+
+#submit-button {
+    float: right;
+    display: inline-block;
+    margin-right: 5px;
 }
-.big {
-    width: 200px;
-    height: 200px;
-}
-#placeholder .button {
-    position: absolute;
-    cursor: pointer;
-}
-#placeholder div.button {
-    font-size: smaller;
-    color: #999;
-    background-color: #eee;
-    padding: 2px;
-}
-.message {
-    padding-left: 50px;
-    font-size: smaller;
-}
-#progressLabel #backLink {
-    text-align: center;
-}
+
 #submit-tick {
     height:20px;
 }
-
-#backLink {
-    position:fixed;
-    right:5px;
-    margin-top:0px
+/*
+ * Styling for resizable section
+ */
+.small {
+    display: none;
 }
-#toggle-size {
-    position: relative;
-    bottom: 10px;
+
+.big {
+    width: auto;
+    height: 300px;
+}
+
+#resize-wrapper img {
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 45%;
 }

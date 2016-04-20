@@ -9,9 +9,9 @@ var debug = false;
 */
 chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
   if (!result || !result.readTimeDefaultSpeed) {
-    document.getElementById("input-box").value = 200;
+    $("#input-box").value = 200;
   } else {
-    document.getElementById("input-box").value = result.readTimeDefaultSpeed;
+    $("#input-box").value = result.readTimeDefaultSpeed;
   }
 });
 
@@ -19,7 +19,7 @@ chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
  * Add a link back to the popup page, and bind submit button to function.
  */
 window.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("backLink").href = chrome.extension.getURL("popup.html");
+    document.getElementById("backlink").href = chrome.extension.getURL("popup.html");
     document.getElementById("input-speed").onsubmit = saveOptions;
 
 });
@@ -180,12 +180,12 @@ function saveOptions() {
 // });
 
 $(document).ready(function(){
-    $('.wrapper').find('a[href="#"]').on('click', function (e) {
+    $('.viz-wrapper').find('a[href="#"]').on('click', function (e) {
         e.preventDefault();
         this.expand = !this.expand;
-        $('.wrapper a').html(this.expand ? "<img src='resources/collapse.svg'></a>"
-                            : "<img src='resources/expand.svg'>");
-        $(this).closest('.wrapper').find('.small, .big').toggleClass('small big');
+        $('.viz-wrapper a').html(this.expand ? "<img src='resources/expand.svg'></a>"
+                            : "<img src='resources/collapse.svg'>");
+        $('#placeholder').toggleClass('small big');
     });
 });
 
