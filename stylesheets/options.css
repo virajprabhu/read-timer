@@ -1,0 +1,55 @@
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 14px;
+}
+/* 
+ * Setting styling for header
+ */
+header {
+    font-weight: bold;
+    font-size: 120%;
+    min-width: 250px;
+    padding-bottom: 10px;
+}
+
+header #backlink {
+    float: right;
+    font-size: 80%;
+    text-decoration: none;
+    color: inherit;
+}
+
+/*
+ * Styling for speed section
+ */
+#input-speed {
+    display: inline-block;
+    text-align: left;
+}
+
+#submit-button {
+    float: right;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#submit-tick {
+    height:20px;
+}
+/*
+ * Styling for resizable section
+ */
+.small {
+    display: none;
+}
+
+.big {
+    width: auto;
+    height: 300px;
+}
+
+#resize-wrapper img {
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 45%;
+}

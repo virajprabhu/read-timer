@@ -5,72 +5,38 @@
 <html>
   <head>
     <title>Read Timer Options</title>
-    <style>
-        body {
-            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-            font-size: 100%;
-        }
-        #input-speed {
-            text-align: center;
-            min-height: 50%;
-        }
-        #placeholder {
-            width: 400px;
-            height: 400px;
-        }
-        #placeholder .button {
-            position: absolute;
-            cursor: pointer;
-        }
-
-        #placeholder div.button {
-            font-size: smaller;
-            color: #999;
-            background-color: #eee;
-            padding: 2px;
-        }
-        .message {
-            padding-left: 50px;
-            font-size: smaller;
-        }
-        #progressLabel #backLink {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="stylesheets/options.css">
     <script language="javascript" type="text/javascript" src="resources/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="resources/jquery.flot.js"></script>
     <script language="javascript" type="text/javascript" src="resources/jquery.flot.time.js"></script>
     <script language="javascript" type="text/javascript" src="resources/jquery.flot.navigate.js"></script>
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
+    <script src="options.js"></script>
     </head>
     <body>
-        <a id="backLink" style='position:fixed;right:5px;margin-top:0px'>
-            <img id="backButton" src="resources/back_button.png" height="36" width="36">
-        </a>
-        <div id="header">
-            <h2 id="progressLabel">Progress</h2>
-        </div>
-        <form id="input-speed">
-            Current speed is 
-            <input type="number" id="input-box" min="10" max="2000" /> WPM
-            <input type="image" src="resources/thumbs_up_resize.png" value="Submit" /> 
-            <div id="saved-message"></div>
-        </form>
-        <script src="options.js"></script>
-
-        <p>Track your learning speed over any time period.</p>
-
-        <div id="content">
-            <div class="demo-container">
-            <div id="placeholder" class="demo-placeholder"></div>
-        </div>
-
-        </div>
+        <header>
+            <span id="progress-label">PROGRESS</span>
+            <a id="backlink">Back</a>
+        </header>
+        <section>
+            <form>
+                <div id="input-speed">
+                    Current speed is 
+                    <input type="number" id="input-box" min="10" max="2000" /> WPM
+                </div>
+                <div id="submit-button">
+                    <input type="image" id="submit-tick" src="resources/tick.svg" value="Submit" />
+                </div>
+            </form>
+        </section>
+        <section class="viz-wrapper">
+            <div id="resize-wrapper">
+                <a href="#">
+                    <img src="resources/collapse.svg">
+                </a>
+            </div>
+            <div id="placeholder" class="big">
+            </div>
+        </section>
     </body>
 </html>
 

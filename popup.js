@@ -4,7 +4,7 @@
  */
 
 // Debug flag
-var debug = true;
+var debug = false;
 
 // The word count on the current page.
 var count = -1;
@@ -74,7 +74,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
  */
 window.addEventListener("DOMContentLoaded", function() {
 	// Add a link to the options page.
-	document.getElementById("optionsLink").href = chrome.extension.getURL("options.html");
+	document.getElementById("optionslink").href = chrome.extension.getURL("options.html");
 
 	chrome.storage.sync.get("readTimeDefaultSpeed", function(result) {
 		if (result && result.readTimeDefaultSpeed) {
